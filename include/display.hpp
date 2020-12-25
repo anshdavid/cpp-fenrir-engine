@@ -2,8 +2,8 @@
 #define __DISPLAY_H__
 
 #include <SDL2/SDL.h>
-#include <string>
 #include <GL/glew.h>
+#include <string>
 #include <iostream>
 
 class Display

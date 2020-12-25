@@ -9,19 +9,23 @@ link_directories(${PROJECT_SOURCE_DIR}/lib)
 file(GLOB_RECURSE SOURCE_FILES
     ${PROJECT_SOURCE_DIR}/src/*.cpp
     ${PROJECT_SOURCE_DIR}/src/*.c
+    ${PROJECT_SOURCE_DIR}/vendor/*.cpp
+    ${PROJECT_SOURCE_DIR}/vendor/*.c
     fenrir.cpp
 )
 
 file(GLOB_RECURSE HEADER_FILES
-    ${PROJECT_SOURCE_DIR}/include/*.h
     ${PROJECT_SOURCE_DIR}/include/*.hpp
-    ${PROJECT_SOURCE_DIR}/vendor/*.h
-    ${PROJECT_SOURCE_DIR}/vendor/*.hpp
+    ${PROJECT_SOURCE_DIR}/include/*.h
+    ${PROJECT_SOURCE_DIR}/vendor/nothings_stb/*.hpp
+    ${PROJECT_SOURCE_DIR}/vendor/nothings_stb/*.h
 )
 
-include_directories(${PROJECT_SOURCE_DIR}/include)
-include_directories(${PROJECT_SOURCE_DIR}/src)
-include_directories(${PROJECT_SOURCE_DIR}/vendor)
+include_directories(${CMAKE_SOURCE_DIR}/include)
+include_directories(${CMAKE_SOURCE_DIR}/src)
+include_directories(${CMAKE_SOURCE_DIR}/vendor)
+include_directories(${CMAKE_SOURCE_DIR}/vendor/nothings_stb)
+
 
 add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
 
@@ -52,13 +56,13 @@ endif()
 find_package(SDL2_image REQUIRED)
 if (SDL2_image_FOUND)
     include_directories(${SDL2_IMAGE_INCLUDE_DIR})
-    message(STATUS "found SDL2_image_FOUND")
+    message(STATUS "found SDL2_image")
 endif()
 
 find_package(SDL2_ttf REQUIRED)
 if (SDL2_ttf_FOUND)
     include_directories(${SDL2_TTF_INCLUDE_DIR})
-    message(STATUS "found SDL2_ttf_FOUND")
+    message(STATUS "found SDL2_ttf")
 endif()
 
 target_link_libraries(
