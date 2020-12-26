@@ -2,14 +2,20 @@
 #include "mesh.hpp"
 #include "shader.hpp"
 #include "texture.hpp"
+#include "camera.hpp"
+
+#define WIDTH 800
+#define HEIGHT 600
 
 int main(int argc, char *argv[])
 {
-    Display display(800, 600, "fenrir engine");
+    Display display(WIDTH, HEIGHT, "fenrir engine");
 
     Shader shader("./resources/basicShader");
 
     Texture texture("./resources/logof.png");
+
+    Mesh mesh2("./resources/monkey.obj");
 
     Transform transform;
 
@@ -19,7 +25,11 @@ int main(int argc, char *argv[])
         Vertex(glm::vec3(0.5, -0.5, 0), glm::vec2(0, 0)),
     };
 
-    Mesh mesh(vertices, sizeof(vertices) / sizeof(vertices[0]));
+    Camera camera(glm::vec3(0, 0, -4), 70.0f, (float)WIDTH / (float)HEIGHT, 0.01f, 1000.0f);
+
+    unsigned int indices[] = {0, 1, 2};
+
+    Mesh mesh(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]));
 
     float counter = 0.0f;
 
@@ -28,16 +38,19 @@ int main(int argc, char *argv[])
         display.Clear(0.0f, 0.15f, 0.3f, 1.0f);
 
         float sinCounter = sinf(counter);
-        float cosCoutner = cosf(counter);
+        float cosCounter = cosf(counter);
 
         transform.GetPos().x = sinCounter;
+        transform.GetPos().z = cosCounter;
+        transform.GetRot().x = counter;
+        transform.GetRot().y = counter * 2;
         transform.GetRot().z = counter;
-        transform.SetScale(glm::vec3(cosCoutner, cosCoutner, cosCoutner));
+        // transform.SetScale(glm::vec3(cosCounter, cosCounter, cosCounter));
 
         shader.Bind();
         texture.Bind(0);
-        shader.Update(transform);
-        mesh.Draw();
+        shader.Update(transform, camera);
+        mesh2.Draw();
 
         display.Update();
 
